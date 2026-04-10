@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 8177483873422520847}
   - component: {fileID: 4582024495326907365}
   - component: {fileID: 8026646459115627076}
+  - component: {fileID: 9140116887192265734}
+  - component: {fileID: 3836353621378297587}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -171,3 +173,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   moveSpeed: 2
   detectionRange: 10
+--- !u!114 &9140116887192265734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4669689874518007129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23b5eb63f7ec943359fb4f17e6f1a8a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HealthSystem
+  maxHealth: 30
+--- !u!114 &3836353621378297587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4669689874518007129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd4a8d11153e243d498ee7e8fec4075f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyDamage
+  damageAmount: 10
+  damageCooldown: 1
