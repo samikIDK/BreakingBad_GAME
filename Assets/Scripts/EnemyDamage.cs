@@ -5,25 +5,36 @@ public class EnemyDamage : MonoBehaviour
     [Header("Damage")]
     public float damageAmount = 10f;
     public float damageCooldown = 1f;
+    public float damageRadius = 0.8f;
 
     private float timer;
+    private Transform player;
 
-    void OnCollisionStay2D(Collision2D collision)
+    void Start()
     {
-        if (collision.gameObject.CompareTag("Player"))
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        timer = damageCooldown;
+    }
+
+    void Update()
+    {
+        if (player == null) return;
+
+        float distance = Vector2.Distance(transform.position, player.position);
+
+        if (distance <= damageRadius)
         {
             timer += Time.deltaTime;
 
             if (timer >= damageCooldown)
             {
-                collision.gameObject.GetComponent<HealthSystem>().TakeDamage(damageAmount);
+                player.GetComponent<HealthSystem>().TakeDamage(damageAmount);
                 timer = 0f;
             }
         }
-    }
-
-    void OnCollisionExit2D(Collision2D collision)
-    {
-        timer = 0f;
+        else
+        {
+            timer = damageCooldown;
+        }
     }
 }
