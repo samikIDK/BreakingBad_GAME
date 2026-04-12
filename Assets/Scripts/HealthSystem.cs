@@ -24,21 +24,21 @@ public class HealthSystem : MonoBehaviour
     }
 
     void Die()
+{
+    if (gameObject.CompareTag("Enemy"))
     {
-        if (gameObject.CompareTag("Enemy"))
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
         {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            if (player != null)
-            {
-                player.GetComponent<XPSystem>().AddXP(20f);
-            }
-            Destroy(gameObject);
+            player.GetComponent<XPSystem>().AddXP(20f);
         }
-        else if (gameObject.CompareTag("Player"))
-        {
-            Debug.Log("Game Over!");
-        }
+        Destroy(gameObject);
     }
+    else if (gameObject.CompareTag("Player"))
+    {
+        GameObject.FindObjectOfType<GameOverUI>().ShowGameOver();
+    }
+}
 
     public float GetCurrentHealth()
     {
