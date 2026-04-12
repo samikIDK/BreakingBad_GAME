@@ -34,6 +34,6 @@ public class GameOverUI : MonoBehaviour
     public void BackToLobby()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("SampleScene"); // Později změníme na Lobby scénu
+        SceneManager.LoadScene("Lobby");
     }
 }

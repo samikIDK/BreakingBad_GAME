@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class HealthSystem : MonoBehaviour
 {
@@ -24,21 +25,21 @@ public class HealthSystem : MonoBehaviour
     }
 
     void Die()
-{
-    if (gameObject.CompareTag("Enemy"))
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
+        if (gameObject.CompareTag("Enemy"))
         {
-            player.GetComponent<XPSystem>().AddXP(20f);
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                player.GetComponent<XPSystem>().AddXP(20f);
+            }
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
+        else if (gameObject.CompareTag("Player"))
+        {
+            GameObject.FindObjectOfType<GameOverUI>().ShowGameOver();
+        }
     }
-    else if (gameObject.CompareTag("Player"))
-    {
-        GameObject.FindObjectOfType<GameOverUI>().ShowGameOver();
-    }
-}
 
     public float GetCurrentHealth()
     {
