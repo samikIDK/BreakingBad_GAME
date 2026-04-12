@@ -28,7 +28,19 @@ public class GameOverUI : MonoBehaviour
 
         int minutes = Mathf.FloorToInt(survivalTime / 60f);
         int seconds = Mathf.FloorToInt(survivalTime % 60f);
-        timeText.text = "Čas přežití: " + minutes + ":" + seconds.ToString("00");
+        timeText.text = "Survival Time: " + minutes + ":" + seconds.ToString("00");
+
+        int earnedChemicals = CalculateChemicals();
+        int currentChemicals = PlayerPrefs.GetInt("Chemicals", 0);
+        PlayerPrefs.SetInt("Chemicals", currentChemicals + earnedChemicals);
+        PlayerPrefs.Save();
+
+        Debug.Log("Earned chemicals: " + earnedChemicals);
+    }
+
+    int CalculateChemicals()
+    {
+        return Mathf.FloorToInt(survivalTime / 5f);
     }
 
     public void BackToLobby()
