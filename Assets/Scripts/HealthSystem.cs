@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class HealthSystem : MonoBehaviour
 {
@@ -7,9 +8,9 @@ public class HealthSystem : MonoBehaviour
     private float currentHealth;
 
     void Awake()
-{
-    currentHealth = maxHealth;
-}
+    {
+        currentHealth = maxHealth;
+    }
 
     public void TakeDamage(float damage)
     {
@@ -23,22 +24,21 @@ public class HealthSystem : MonoBehaviour
     }
 
     void Die()
-{
-    if (gameObject.CompareTag("Enemy"))
     {
-        // Dá XP hráči
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
+        if (gameObject.CompareTag("Enemy"))
         {
-            player.GetComponent<XPSystem>().AddXP(20f);
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                player.GetComponent<XPSystem>().AddXP(20f);
+            }
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
+        else if (gameObject.CompareTag("Player"))
+        {
+            Debug.Log("Game Over!");
+        }
     }
-    else if (gameObject.CompareTag("Player"))
-    {
-        Debug.Log("Game Over!");
-    }
-}
 
     public float GetCurrentHealth()
     {
@@ -48,5 +48,14 @@ public class HealthSystem : MonoBehaviour
     public float GetMaxHealth()
     {
         return maxHealth;
+    }
+
+    public IEnumerator Regen(float amount)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1f);
+            currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+        }
     }
 }

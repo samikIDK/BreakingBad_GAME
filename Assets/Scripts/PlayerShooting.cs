@@ -7,6 +7,7 @@ public class PlayerShooting : MonoBehaviour
     public float fireRate = 1f;
     public float bulletSpeed = 8f;
     public float shootRange = 8f;
+    public float bulletDamage = 20f;
 
     private float timer;
 
@@ -50,5 +51,6 @@ public class PlayerShooting : MonoBehaviour
         Vector2 direction = (target.position - transform.position).normalized;
         GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody2D>().linearVelocity = direction * bulletSpeed;
+        bullet.GetComponent<Bullet>().damage = bulletDamage;
     }
 }
