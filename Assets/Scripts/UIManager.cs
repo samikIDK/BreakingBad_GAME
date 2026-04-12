@@ -3,19 +3,18 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [Header("HP Bar")]
-    public Slider hpBar;
-    public HealthSystem playerHealth;
+    public Slider xpBar;
+    public XPSystem playerXP;
 
     void Awake()
     {
-        hpBar.minValue = 0;
-        hpBar.maxValue = playerHealth.maxHealth;
-        hpBar.value = playerHealth.maxHealth;
+        xpBar.minValue = 0;
+        xpBar.maxValue = 1;
+        xpBar.value = 0;
     }
 
     void Update()
     {
-        hpBar.value = playerHealth.GetCurrentHealth();
+        xpBar.value = playerXP.GetXPProgress();
     }
 }

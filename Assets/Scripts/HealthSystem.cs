@@ -23,17 +23,22 @@ public class HealthSystem : MonoBehaviour
     }
 
     void Die()
+{
+    if (gameObject.CompareTag("Enemy"))
     {
-        if (gameObject.CompareTag("Enemy"))
+        // Dá XP hráči
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
         {
-            Destroy(gameObject);
+            player.GetComponent<XPSystem>().AddXP(20f);
         }
-        else if (gameObject.CompareTag("Player"))
-        {
-            Debug.Log("Game Over!");
-            // Sem přidáme Game Over scénu později
-        }
+        Destroy(gameObject);
     }
+    else if (gameObject.CompareTag("Player"))
+    {
+        Debug.Log("Game Over!");
+    }
+}
 
     public float GetCurrentHealth()
     {
