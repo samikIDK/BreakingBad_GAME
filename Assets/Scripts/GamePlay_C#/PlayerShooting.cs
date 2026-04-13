@@ -11,6 +11,20 @@ public class PlayerShooting : MonoBehaviour
 
     private float timer;
 
+    void Start()
+    {
+        string character = PlayerPrefs.GetString("SelectedCharacter", "Walter");
+        int level;
+
+        if (character == "Walter")
+            level = PlayerPrefs.GetInt("WalterLevel", 1);
+        else
+            level = PlayerPrefs.GetInt("JesseLevel", 1);
+
+        bulletDamage *= 1f + (level - 1) * 0.05f;
+        fireRate *= 1f + (level - 1) * 0.03f;
+    }
+
     void Update()
     {
         timer += Time.deltaTime;

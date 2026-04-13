@@ -11,20 +11,27 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        string character = PlayerPrefs.GetString("SelectedCharacter", "Walter");
+        int level;
+
+        if (character == "Walter")
+            level = PlayerPrefs.GetInt("WalterLevel", 1);
+        else
+            level = PlayerPrefs.GetInt("JesseLevel", 1);
+
+        moveSpeed *= 1f + (level - 1) * 0.05f;
     }
 
     void Update()
     {
-        // Čte input z klávesnice (WASD nebo šipky)
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
-
         moveInput = new Vector2(x, y).normalized;
     }
 
     void FixedUpdate()
     {
-        // Pohybuje hráčem
         rb.linearVelocity = moveInput * moveSpeed;
     }
 }
