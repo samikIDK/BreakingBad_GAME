@@ -37,7 +37,7 @@ public class HealthSystem : MonoBehaviour
         }
         else if (gameObject.CompareTag("Player"))
         {
-            GameObject.FindObjectOfType<GameOverUI>().ShowGameOver();
+            GameObject.FindAnyObjectByType<GameOverUI>().ShowGameOver();
         }
     }
 
