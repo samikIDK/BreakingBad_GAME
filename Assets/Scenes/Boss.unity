@@ -493,7 +493,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDamage
   damageAmount: 10
   damageCooldown: 1
-  damageRadius: 0.8
+  damageRadius: 1.5
 --- !u!114 &255552675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -537,7 +537,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
