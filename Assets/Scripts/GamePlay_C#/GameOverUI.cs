@@ -26,6 +26,9 @@ public class GameOverUI : MonoBehaviour
         gameOverPanel.SetActive(true);
         Time.timeScale = 0f;
 
+        if (GameManager.Instance != null)
+         GameManager.Instance.ResetIngameUpgrades();
+
         int minutes = Mathf.FloorToInt(survivalTime / 60f);
         int seconds = Mathf.FloorToInt(survivalTime % 60f);
         timeText.text = "Survival Time: " + minutes + ":" + seconds.ToString("00");

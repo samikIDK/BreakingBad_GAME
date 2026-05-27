@@ -14,25 +14,28 @@ public class PlayerShooting : MonoBehaviour
     void Start()
     {
         string character = PlayerPrefs.GetString("SelectedCharacter", "Walter");
-        int level;
-
-        if (character == "Walter")
-            level = PlayerPrefs.GetInt("WalterLevel", 1);
-        else
-            level = PlayerPrefs.GetInt("JesseLevel", 1);
+        int level = character == "Walter" ?
+            PlayerPrefs.GetInt("WalterLevel", 1) :
+            PlayerPrefs.GetInt("JesseLevel", 1);
 
         bulletDamage *= 1f + (level - 1) * 0.05f;
         fireRate *= 1f + (level - 1) * 0.03f;
+
+        // Aplikuj ingame upgrady
+        if (GameManager.Instance != null)
+        {
+            bulletDamage *= GameManager.Instance.damageMultiplier;
+            fireRate *= GameManager.Instance.attackSpeedMultiplier;
+            shootRange *= GameManager.Instance.shootRangeMultiplier;
+        }
     }
 
     void Update()
     {
         timer += Time.deltaTime;
-
         if (timer >= 1f / fireRate)
         {
             GameObject nearestEnemy = FindNearestEnemy();
-
             if (nearestEnemy != null)
             {
                 Shoot(nearestEnemy.transform);
@@ -56,7 +59,6 @@ public class PlayerShooting : MonoBehaviour
                 nearest = enemy;
             }
         }
-
         return nearest;
     }
 

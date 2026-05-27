@@ -13,14 +13,15 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         string character = PlayerPrefs.GetString("SelectedCharacter", "Walter");
-        int level;
-
-        if (character == "Walter")
-            level = PlayerPrefs.GetInt("WalterLevel", 1);
-        else
-            level = PlayerPrefs.GetInt("JesseLevel", 1);
+        int level = character == "Walter" ?
+            PlayerPrefs.GetInt("WalterLevel", 1) :
+            PlayerPrefs.GetInt("JesseLevel", 1);
 
         moveSpeed *= 1f + (level - 1) * 0.05f;
+
+        // Aplikuj ingame upgrady z GameManageru
+        if (GameManager.Instance != null)
+            moveSpeed *= GameManager.Instance.moveSpeedMultiplier;
     }
 
     void Update()
