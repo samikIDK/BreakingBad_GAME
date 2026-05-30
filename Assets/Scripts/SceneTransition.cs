@@ -5,7 +5,7 @@ using TMPro;
 public class SceneTransition : MonoBehaviour
 {
     [Header("Settings")]
-    public float mapDuration = 420f; // 15 sekund
+    public float mapDuration = 420f; 
     public string nextScene = "Lab";
 
     [Header("UI")]

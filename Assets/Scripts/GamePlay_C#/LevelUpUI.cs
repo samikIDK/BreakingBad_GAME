@@ -77,34 +77,50 @@ public class LevelUpUI : MonoBehaviour
         return result;
     }
 
-    void SelectUpgrade(string upgrade)
-    {
-        switch (upgrade)
-        {
-            case "Damage +25%":
-                shooting.bulletDamage *= 1.25f;
-                break;
-            case "Attack Speed +20%":
-                shooting.fireRate *= 1.2f;
-                break;
-            case "Move Speed +15%":
-                movement.moveSpeed *= 1.15f;
-                break;
-            case "Max HP +30":
-                health.maxHealth += 30f;
-                break;
-            case "XP Gain +25%":
-                xpSystem.xpToNextLevel *= 0.75f;
-                break;
-            case "Shoot Range +20%":
-                shooting.shootRange *= 1.2f;
-                break;
-            case "HP Regen +2/s":
-                health.StartCoroutine(health.Regen(2f));
-                break;
-        }
+   void SelectUpgrade(string upgrade)
+{
+    Debug.Log("Selected: " + upgrade);
 
-        levelUpPanel.SetActive(false);
-        Time.timeScale = 1f;
+    switch (upgrade)
+    {
+        case "Damage +25%":
+            shooting.bulletDamage *= 1.25f;
+            if (GameManager.Instance != null)
+                GameManager.Instance.damageMultiplier *= 1.25f;
+            break;
+        case "Attack Speed +20%":
+            shooting.fireRate *= 1.2f;
+            if (GameManager.Instance != null)
+                GameManager.Instance.attackSpeedMultiplier *= 1.2f;
+            break;
+        case "Move Speed +15%":
+            movement.moveSpeed *= 1.15f;
+            if (GameManager.Instance != null)
+                GameManager.Instance.moveSpeedMultiplier *= 1.15f;
+            break;
+        case "Max HP +30":
+            health.maxHealth += 30f;
+            if (GameManager.Instance != null)
+                GameManager.Instance.maxHPBonus += 30f;
+            break;
+        case "XP Gain +25%":
+            xpSystem.xpToNextLevel *= 0.75f;
+            if (GameManager.Instance != null)
+                GameManager.Instance.xpMultiplier *= 0.75f;
+            break;
+        case "Shoot Range +20%":
+            shooting.shootRange *= 1.2f;
+            if (GameManager.Instance != null)
+                GameManager.Instance.shootRangeMultiplier *= 1.2f;
+            break;
+        case "HP Regen +2/s":
+            health.StartCoroutine(health.Regen(2f));
+            if (GameManager.Instance != null)
+                GameManager.Instance.hasRegen = true;
+            break;
     }
+
+    levelUpPanel.SetActive(false);
+    Time.timeScale = 1f;
+}
 }

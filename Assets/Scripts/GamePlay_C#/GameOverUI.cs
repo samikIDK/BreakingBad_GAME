@@ -5,9 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class GameOverUI : MonoBehaviour
 {
-    [Header("Panel")]
+    [Header("Game Over")]
     public GameObject gameOverPanel;
     public TextMeshProUGUI timeText;
+
+    [Header("Victory")]
+    public GameObject victoryPanel;
 
     private float survivalTime;
     private bool isGameOver = false;
@@ -15,9 +18,7 @@ public class GameOverUI : MonoBehaviour
     void Update()
     {
         if (!isGameOver)
-        {
             survivalTime += Time.deltaTime;
-        }
     }
 
     public void ShowGameOver()
@@ -25,9 +26,6 @@ public class GameOverUI : MonoBehaviour
         isGameOver = true;
         gameOverPanel.SetActive(true);
         Time.timeScale = 0f;
-
-        if (GameManager.Instance != null)
-         GameManager.Instance.ResetIngameUpgrades();
 
         int minutes = Mathf.FloorToInt(survivalTime / 60f);
         int seconds = Mathf.FloorToInt(survivalTime % 60f);
@@ -38,7 +36,27 @@ public class GameOverUI : MonoBehaviour
         PlayerPrefs.SetInt("Chemicals", currentChemicals + earnedChemicals);
         PlayerPrefs.Save();
 
-        Debug.Log("Earned chemicals: " + earnedChemicals);
+        if (GameManager.Instance != null)
+            GameManager.Instance.ResetIngameUpgrades();
+    }
+
+    public void ShowVictory()
+    {
+        isGameOver = true;
+        victoryPanel.SetActive(true);
+        Time.timeScale = 0f;
+
+        int minutes = Mathf.FloorToInt(survivalTime / 60f);
+        int seconds = Mathf.FloorToInt(survivalTime % 60f);
+        timeText.text = "Survival Time: " + minutes + ":" + seconds.ToString("00");
+
+        int earnedChemicals = CalculateChemicals() * 2;
+        int currentChemicals = PlayerPrefs.GetInt("Chemicals", 0);
+        PlayerPrefs.SetInt("Chemicals", currentChemicals + earnedChemicals);
+        PlayerPrefs.Save();
+
+        if (GameManager.Instance != null)
+            GameManager.Instance.ResetIngameUpgrades();
     }
 
     int CalculateChemicals()

@@ -25,21 +25,30 @@ public class HealthSystem : MonoBehaviour
     }
 
     void Die()
+{
+    if (gameObject.CompareTag("Enemy"))
     {
-        if (gameObject.CompareTag("Enemy"))
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
         {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            if (player != null)
-            {
-                player.GetComponent<XPSystem>().AddXP(20f);
-            }
-            Destroy(gameObject);
+            player.GetComponent<XPSystem>().AddXP(20f);
         }
-        else if (gameObject.CompareTag("Player"))
+
+        // Zkontroluj jestli je to Boss
+        if (gameObject.name.Contains("Boss"))
         {
-            GameObject.FindAnyObjectByType<GameOverUI>().ShowGameOver();
+            FindAnyObjectByType<GameOverUI>().ShowVictory();
         }
+
+        Destroy(gameObject);
     }
+    else if (gameObject.CompareTag("Player"))
+    {
+        if (GameManager.Instance != null)
+            GameManager.Instance.ResetIngameUpgrades();
+        FindAnyObjectByType<GameOverUI>().ShowGameOver();
+    }
+}
 
     public float GetCurrentHealth()
     {
