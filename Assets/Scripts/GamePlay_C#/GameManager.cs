@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public float xpMultiplier = 1f;
     public float shootRangeMultiplier = 1f;
     public bool hasRegen = false;
+    public float survivalTime = 0f;
 
     void Awake()
     {
@@ -35,5 +36,6 @@ public class GameManager : MonoBehaviour
         xpMultiplier = 1f;
         shootRangeMultiplier = 1f;
         hasRegen = false;
+        survivalTime = 0f;
     }
 }
