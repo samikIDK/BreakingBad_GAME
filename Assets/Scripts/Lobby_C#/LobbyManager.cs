@@ -5,92 +5,135 @@ using UnityEngine.SceneManagement;
 
 public class LobbyManager : MonoBehaviour
 {
-    [Header("UI")]
-    public TextMeshProUGUI currencyText;
+    [Header("Panels")]
+    public GameObject mainMenuPanel;
+    public GameObject characterSelectPanel;
+    public GameObject upgradesPanel;
+    public GameObject settingsPanel;
 
-    [Header("Characters")]
-    public Button walterButton;
-    public Button jesseButton;
+    [Header("Currency")]
+    public TextMeshProUGUI chemicalsText;
 
-    [Header("Walter Upgrade")]
-    public TextMeshProUGUI walterLevelText;
-    public Button walterUpgradeButton;
-
-    [Header("Jesse Upgrade")]
-    public TextMeshProUGUI jesseLevelText;
-    public Button jesseUpgradeButton;
-
-    private int chemicals;
-    private int walterLevel;
-    private int jesseLevel;
-    private int maxLevel = 10;
-    private int upgradeCost = 50;
-    private string selectedCharacter = "Walter";
+    [Header("Settings")]
+    public Slider volumeSlider;
 
     void Start()
     {
-        chemicals = PlayerPrefs.GetInt("Chemicals", 0);
-        walterLevel = PlayerPrefs.GetInt("WalterLevel", 1);
-        jesseLevel = PlayerPrefs.GetInt("JesseLevel", 1);
+        UpdateChemicals();
+        ShowMainMenu();
 
-        walterButton.onClick.AddListener(() => SelectCharacter("Walter"));
-        jesseButton.onClick.AddListener(() => SelectCharacter("Jesse"));
-        walterUpgradeButton.onClick.AddListener(() => UpgradeCharacter("Walter"));
-        jesseUpgradeButton.onClick.AddListener(() => UpgradeCharacter("Jesse"));
-
-        UpdateUI();
+        if (volumeSlider != null)
+        {
+            volumeSlider.value = AudioListener.volume;
+            volumeSlider.onValueChanged.AddListener(SetVolume);
+        }
     }
 
-    void SelectCharacter(string character)
+    void UpdateChemicals()
     {
-        selectedCharacter = character;
-        PlayerPrefs.SetString("SelectedCharacter", character);
-        Debug.Log("Selected: " + character);
-        UpdateUI();
+        int chemicals = PlayerPrefs.GetInt("Chemicals", 0);
+        if (chemicalsText != null)
+            chemicalsText.text = "⚗️ " + chemicals;
+    }
+
+    // Main Menu
+    public void ShowMainMenu()
+    {
+        mainMenuPanel.SetActive(true);
+        characterSelectPanel.SetActive(false);
+        upgradesPanel.SetActive(false);
+        if (settingsPanel != null) settingsPanel.SetActive(false);
+    }
+
+    // Play → Character Select
+    public void OnPlayButton()
+    {
+        mainMenuPanel.SetActive(false);
+        characterSelectPanel.SetActive(true);
+    }
+
+    // Character Select
+    public void SelectWalter()
+    {
+        PlayerPrefs.SetString("SelectedCharacter", "Walter");
+        PlayerPrefs.Save();
+        SceneManager.LoadScene("GamePlay");
+    }
+
+    public void SelectJesse()
+    {
+        PlayerPrefs.SetString("SelectedCharacter", "Jesse");
+        PlayerPrefs.Save();
+        SceneManager.LoadScene("GamePlay");
+    }
+
+    // Upgrades
+    public void OnUpgradesButton()
+    {
+        mainMenuPanel.SetActive(false);
+        upgradesPanel.SetActive(true);
+    }
+
+    public void OnUpgradeWalter()
+    {
+        UpgradeCharacter("Walter");
+    }
+
+    public void OnUpgradeJesse()
+    {
+        UpgradeCharacter("Jesse");
     }
 
     void UpgradeCharacter(string character)
     {
-        if (chemicals < upgradeCost) 
+        int chemicals = PlayerPrefs.GetInt("Chemicals", 0);
+        int level = PlayerPrefs.GetInt(character + "Level", 1);
+        int cost = 50;
+        int maxLevel = 10;
+
+        if (chemicals < cost)
         {
             Debug.Log("Not enough chemicals!");
             return;
         }
 
-        if (character == "Walter" && walterLevel < maxLevel)
+        if (level >= maxLevel)
         {
-            walterLevel++;
-            PlayerPrefs.SetInt("WalterLevel", walterLevel);
-            chemicals -= upgradeCost;
-            PlayerPrefs.SetInt("Chemicals", chemicals);
-            PlayerPrefs.Save();
-            Debug.Log("Walter upgraded to level: " + walterLevel);
-        }
-        else if (character == "Jesse" && jesseLevel < maxLevel)
-        {
-            jesseLevel++;
-            PlayerPrefs.SetInt("JesseLevel", jesseLevel);
-            chemicals -= upgradeCost;
-            PlayerPrefs.SetInt("Chemicals", chemicals);
-            PlayerPrefs.Save();
-            Debug.Log("Jesse upgraded to level: " + jesseLevel);
+            Debug.Log("Max level reached!");
+            return;
         }
 
-        UpdateUI();
+        level++;
+        chemicals -= cost;
+        PlayerPrefs.SetInt(character + "Level", level);
+        PlayerPrefs.SetInt("Chemicals", chemicals);
+        PlayerPrefs.Save();
+        UpdateChemicals();
+        Debug.Log(character + " upgraded to level: " + level);
     }
 
-    void UpdateUI()
+    // Settings
+    public void OnSettingsButton()
     {
-        currencyText.text = "⚗️ Chemicals: " + chemicals;
-        walterLevelText.text = "Level: " + walterLevel + "/" + maxLevel;
-        jesseLevelText.text = "Level: " + jesseLevel + "/" + maxLevel;
-
-        walterUpgradeButton.interactable = walterLevel < maxLevel && chemicals >= upgradeCost;
-        jesseUpgradeButton.interactable = jesseLevel < maxLevel && chemicals >= upgradeCost;
+        mainMenuPanel.SetActive(false);
+        settingsPanel.SetActive(true);
     }
 
-    public void StartGame()
+    void SetVolume(float value)
     {
-        SceneManager.LoadScene("GamePlay");
+        AudioListener.volume = value;
+    }
+
+    // Quit
+    public void OnQuitButton()
+    {
+        Application.Quit();
+    }
+
+    // Back buttons
+    public void BackToMainMenu()
+    {
+        ShowMainMenu();
+        UpdateChemicals();
     }
 }
