@@ -33,7 +33,7 @@ public class LobbyManager : MonoBehaviour
     {
         int chemicals = PlayerPrefs.GetInt("Chemicals", 0);
         if (chemicalsText != null)
-            chemicalsText.text = "⚗️ " + chemicals;
+            chemicalsText.text = chemicals.ToString();
     }
 
     // Main Menu
