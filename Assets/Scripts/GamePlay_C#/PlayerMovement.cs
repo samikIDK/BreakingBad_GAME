@@ -8,21 +8,26 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 moveInput;
 
-    void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
+   void Start()
+{
+    rb = GetComponent<Rigidbody2D>();
 
-        string character = PlayerPrefs.GetString("SelectedCharacter", "Walter");
-        int level = character == "Walter" ?
-            PlayerPrefs.GetInt("WalterLevel", 1) :
-            PlayerPrefs.GetInt("JesseLevel", 1);
+    string character = PlayerPrefs.GetString("SelectedCharacter", "Walter");
+    int level = character == "Walter" ?
+        PlayerPrefs.GetInt("WalterLevel", 1) :
+        PlayerPrefs.GetInt("JesseLevel", 1);
 
-        moveSpeed *= 1f + (level - 1) * 0.05f;
+    moveSpeed *= 1f + (level - 1) * 0.05f;
 
-        // Aplikuj ingame upgrady z GameManageru
-        if (GameManager.Instance != null)
-            moveSpeed *= GameManager.Instance.moveSpeedMultiplier;
-    }
+    if (GameManager.Instance != null)
+        moveSpeed *= GameManager.Instance.moveSpeedMultiplier;
+
+    Animator anim = GetComponent<Animator>();
+    if (character == "Walter")
+        anim.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("WalterAnimator");
+    else
+        anim.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("JesseAnimator");
+}
 
     void Update()
     {

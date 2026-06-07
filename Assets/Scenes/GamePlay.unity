@@ -3348,7 +3348,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4ef5a655c6904f6fa33ae0d6bb7d517, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneTransition
-  mapDuration: 300
+  mapDuration: 30
   nextScene: Lab
   timerText: {fileID: 340921047}
 --- !u!114 &1270069269
@@ -5150,6 +5150,7 @@ GameObject:
   - component: {fileID: 2085816262}
   - component: {fileID: 2085816263}
   - component: {fileID: 2085816264}
+  - component: {fileID: 2085816265}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -5376,6 +5377,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2085816265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2085816255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82549c4eece1444019493ef0aed2ddd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimator
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
