@@ -518,6 +518,7 @@ GameObject:
   - component: {fileID: 255552675}
   - component: {fileID: 255552674}
   - component: {fileID: 255552673}
+  - component: {fileID: 255552678}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Enemy
@@ -707,6 +708,28 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!95 &255552678
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 255552670}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 15bdd2ef88cb94110be8fbe52a0bf68a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &292738209
 GameObject:
   m_ObjectHideFlags: 0
@@ -4683,6 +4706,7 @@ MonoBehaviour:
   xpMultiplier: 1
   shootRangeMultiplier: 1
   hasRegen: 0
+  survivalTime: 0
 --- !u!4 &2113871317
 Transform:
   m_ObjectHideFlags: 0

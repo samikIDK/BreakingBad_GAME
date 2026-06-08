@@ -4,15 +4,16 @@ public class EnemyAI : MonoBehaviour
 {
     [Header("Settings")]
     public float moveSpeed = 2f;
-    public float detectionRange = 10f;
+    public float detectionRange = 9999f;
 
     private Transform player;
     private Rigidbody2D rb;
+    private Animator animator;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        // Automaticky najde hráče ve scéně
+        animator = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
@@ -24,13 +25,20 @@ public class EnemyAI : MonoBehaviour
 
         if (distanceToPlayer < detectionRange)
         {
-            // Pohybuje se směrem k hráči
             Vector2 direction = (player.position - transform.position).normalized;
-            rb.linearVelocity = direction * moveSpeed;
+            rb.MovePosition(rb.position + direction * moveSpeed * Time.fixedDeltaTime);
+
+            if (animator != null)
+            {
+                animator.SetFloat("MoveX", direction.x);
+                animator.SetFloat("MoveY", direction.y);
+                animator.SetBool("IsMoving", true);
+            }
         }
         else
         {
-            rb.linearVelocity = Vector2.zero;
+            if (animator != null)
+                animator.SetBool("IsMoving", false);
         }
     }
 }
