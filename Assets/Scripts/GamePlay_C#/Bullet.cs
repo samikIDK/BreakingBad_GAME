@@ -8,7 +8,6 @@ public class Bullet : MonoBehaviour
 
     void Start()
     {
-        // Bullet se automaticky zničí po 3 sekundách
         Destroy(gameObject, lifetime);
     }
 
@@ -17,7 +16,10 @@ public class Bullet : MonoBehaviour
         if (collision.CompareTag("Enemy"))
         {
             collision.GetComponent<HealthSystem>().TakeDamage(damage);
+
             Destroy(gameObject);
         }
     }
+
+
 }

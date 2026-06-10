@@ -13,14 +13,12 @@ public class PauseMenu : MonoBehaviour
     public TextMeshProUGUI upgradesText;
 
     private bool isPaused = false;
-    private float survivalTime = 0f;
 
     void Start()
     {
         pausePanel.SetActive(false);
     }
 
-    // Odstraň: private float survivalTime = 0f;
 
 void Update()
 {
@@ -86,14 +84,19 @@ void Pause()
         text += "• Max HP: +" + GameManager.Instance.maxHPBonus + "\n";
         hasAny = true;
     }
-    if (GameManager.Instance.shootRangeMultiplier > 1f)
-    {
-        text += "• Shoot Range: x" + GameManager.Instance.shootRangeMultiplier.ToString("F2") + "\n";
-        hasAny = true;
-    }
     if (GameManager.Instance.hasRegen)
     {
         text += "• HP Regen: +2/s\n";
+        hasAny = true;
+    }
+    if (GameManager.Instance.doubleShot)
+    {
+        text += "• Double Shot \n";
+        hasAny = true;
+    }
+    if (GameManager.Instance.bulletSpeedMultiplier > 1f)
+    {
+        text += "• Bullet Speed: x" + GameManager.Instance.bulletSpeedMultiplier.ToString("F2") + "\n";
         hasAny = true;
     }
 
@@ -103,11 +106,20 @@ void Pause()
     upgradesText.text = text;
 }
 
-    public void BackToLobby()
-    {
-        Time.timeScale = 1f;
-        if (GameManager.Instance != null)
-            GameManager.Instance.ResetIngameUpgrades();
-        SceneManager.LoadScene("Lobby");
-    }
+   public void BackToLobby()
+{
+    Time.timeScale = 1f;
+
+    // Vypočítej a ulož chemikálie
+    float survivalTime = GameManager.Instance != null ? GameManager.Instance.survivalTime : 0f;
+    int earnedChemicals = Mathf.FloorToInt(survivalTime / 5f);
+    int currentChemicals = PlayerPrefs.GetInt("Chemicals", 0);
+    PlayerPrefs.SetInt("Chemicals", currentChemicals + earnedChemicals);
+    PlayerPrefs.Save();
+
+    if (GameManager.Instance != null)
+        GameManager.Instance.ResetIngameUpgrades();
+
+    SceneManager.LoadScene("Lobby");
+}
 }

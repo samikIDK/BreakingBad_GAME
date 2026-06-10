@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
     public float shootRangeMultiplier = 1f;
     public bool hasRegen = false;
     public float survivalTime = 0f;
+    public bool doubleShot = false;
+    public float bulletSpeedMultiplier = 1f;
+    public bool hasDash = false;
 
     void Awake()
     {
@@ -37,5 +40,8 @@ public class GameManager : MonoBehaviour
         shootRangeMultiplier = 1f;
         hasRegen = false;
         survivalTime = 0f;
+        doubleShot = false;
+        bulletSpeedMultiplier = 1f;
+        hasDash = false;
     }
 }

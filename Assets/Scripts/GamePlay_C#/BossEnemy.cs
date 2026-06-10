@@ -14,6 +14,7 @@ public class BossEnemy : MonoBehaviour
     private float dashTimer;
     private float minionTimer;
     private bool isDashing = false;
+    private Animator animator;
 
     void Start()
     {
@@ -21,6 +22,7 @@ public class BossEnemy : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         dashTimer = dashCooldown;
         minionTimer = spawnMinionCooldown;
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -48,6 +50,14 @@ public class BossEnemy : MonoBehaviour
             Vector2 direction = (player.position - transform.position).normalized;
             rb.linearVelocity = direction * moveSpeed;
         }
+        if (animator != null && player != null)
+        {
+            Vector2 direction = (player.position - transform.position).normalized;
+            animator.SetFloat("MoveX", direction.x);
+            animator.SetFloat("MoveY", direction.y);
+            animator.SetBool("IsMoving", true);
+        }       
+
     }
 
     System.Collections.IEnumerator Dash()
