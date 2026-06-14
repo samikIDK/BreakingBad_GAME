@@ -26,6 +26,7 @@ public class LevelUpUI : MonoBehaviour
     "HP Regen +2/s",
     "Shield",
     "Double Shot",
+    "Triple Shot",
     "Heal +30 HP",
     "Bullet Speed +30%",
     "Dash (Space)",
@@ -68,16 +69,20 @@ public class LevelUpUI : MonoBehaviour
     {
         int[] result = new int[count];
         System.Collections.Generic.List<int> available = new System.Collections.Generic.List<int>();
-    
+
         for (int i = 0; i < allUpgrades.Length; i++)
         {
-            // Přeskoč Double Shot pokud ho hráč už má
+            // Double Shot - přeskoč pokud už ho máš
             if (allUpgrades[i] == "Double Shot" && shooting.doubleShot) continue;
+            // Triple Shot - zobraz jen pokud máš Double Shot a ještě nemáš Triple
+            if (allUpgrades[i] == "Triple Shot" && !shooting.doubleShot) continue;
+            if (allUpgrades[i] == "Triple Shot" && GameManager.Instance != null && GameManager.Instance.tripleShot) continue;
             available.Add(i);
         }
-    
+
         for (int i = 0; i < count; i++)
         {
+            if (available.Count == 0) break;
             int rand = Random.Range(0, available.Count);
             result[i] = available[rand];
             available.RemoveAt(rand);
@@ -137,12 +142,19 @@ public class LevelUpUI : MonoBehaviour
                 if (dash != null)
                 {
                     dash.enabled = true;
-                    // Aktivuj UI text
-                    GameObject dashText = GameObject.Find("DashCooldownText");
-                    if (dashText != null) dashText.SetActive(true);
+                    if (dash.dashCooldownText != null)
+                        dash.dashCooldownText.gameObject.SetActive(true);
                 }
                 if (GameManager.Instance != null)
                     GameManager.Instance.hasDash = true;
+                break;
+            case "Triple Shot":
+                shooting.doubleShot = true;
+                if (GameManager.Instance != null)
+                {
+                    GameManager.Instance.tripleShot = true;
+                    GameManager.Instance.doubleShot = true;
+                }
                 break;
         }
 

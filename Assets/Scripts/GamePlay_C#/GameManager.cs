@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public bool hasRegen = false;
     public float survivalTime = 0f;
     public bool doubleShot = false;
+    public bool tripleShot = false;
     public float bulletSpeedMultiplier = 1f;
     public bool hasDash = false;
 
@@ -41,6 +42,7 @@ public class GameManager : MonoBehaviour
         hasRegen = false;
         survivalTime = 0f;
         doubleShot = false;
+        tripleShot = false;
         bulletSpeedMultiplier = 1f;
         hasDash = false;
     }

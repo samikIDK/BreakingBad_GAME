@@ -68,5 +68,10 @@ public class GameOverUI : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene("Lobby");
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.musicSource.Stop();
+            AudioManager.Instance.musicSource.clip = null;
+        }
     }
 }

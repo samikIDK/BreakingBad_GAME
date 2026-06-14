@@ -2,9 +2,6 @@ using UnityEngine;
 
 public class PlayerShooting : MonoBehaviour
 {
-    [Header("Bullets")]
-    public GameObject bulletPrefabWalter;
-    public GameObject bulletPrefabJesse;
 
     [Header("Shooting")]
     public GameObject bulletPrefab;
@@ -36,13 +33,11 @@ public class PlayerShooting : MonoBehaviour
         {
             bulletDamage = 40f;
             fireRate = 0.8f;
-            bulletPrefab = bulletPrefabWalter;
         }
         else
         {
             bulletDamage = 15f;
             fireRate = 3f;
-            bulletPrefab = bulletPrefabJesse;
         }
 
         bulletDamage *= 1f + (level - 1) * 0.05f;
@@ -103,9 +98,14 @@ public class PlayerShooting : MonoBehaviour
 
     void ShootShotgun(Vector2 baseDirection)
     {
-        float[] angles = doubleShot ?
-            new float[] { -15f, -8f, 0f, 8f, 15f } :
-            new float[] { -8f, 0f, 8f };
+        float[] angles;
+        
+        if (GameManager.Instance != null && GameManager.Instance.tripleShot)
+            angles = new float[] { -20f, -10f, 0f, 10f, 20f, 30f, -30f };
+        else if (doubleShot)
+            angles = new float[] { -15f, -8f, 0f, 8f, 15f };
+        else
+            angles = new float[] { -8f, 0f, 8f };
 
         foreach (float angle in angles)
         {
@@ -117,10 +117,14 @@ public class PlayerShooting : MonoBehaviour
     void ShootSMG(Vector2 direction)
     {
         SpawnBullet(direction);
-        if (doubleShot)
+        if (GameManager.Instance != null && GameManager.Instance.tripleShot)
         {
-            Vector2 dir2 = RotateVector(direction, 10f);
-            SpawnBullet(dir2);
+            SpawnBullet(RotateVector(direction, 10f));
+            SpawnBullet(RotateVector(direction, -10f));
+        }
+        else if (doubleShot)
+        {
+            SpawnBullet(RotateVector(direction, 10f));
         }
     }
 
@@ -130,6 +134,15 @@ public class PlayerShooting : MonoBehaviour
         bullet.GetComponent<Rigidbody2D>().linearVelocity = direction * bulletSpeed;
         Bullet b = bullet.GetComponent<Bullet>();
         b.damage = bulletDamage;
+
+        // Zvuk střelby
+        if (AudioManager.Instance != null)
+        {
+            if (character == "Walter")
+                AudioManager.Instance.PlayWalterShoot();
+            else
+                AudioManager.Instance.PlayJesseShoot();
+        }
     }
 
     Vector2 RotateVector(Vector2 v, float degrees)

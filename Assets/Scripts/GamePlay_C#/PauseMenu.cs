@@ -38,6 +38,9 @@ void Pause()
     pausePanel.SetActive(true);
     Time.timeScale = 0f;
 
+    if (AudioManager.Instance != null)
+        AudioManager.Instance.musicSource.Pause();
+
     float survivalTime = GameManager.Instance != null ? GameManager.Instance.survivalTime : 0f;
     int minutes = Mathf.FloorToInt(survivalTime / 60f);
     int seconds = Mathf.FloorToInt(survivalTime % 60f);
@@ -51,9 +54,11 @@ void Pause()
         isPaused = false;
         pausePanel.SetActive(false);
         Time.timeScale = 1f;
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.musicSource.UnPause();
     }
 
- void UpdateUpgradesText()
+    void UpdateUpgradesText()
 {
     if (GameManager.Instance == null)
     {
@@ -106,20 +111,22 @@ void Pause()
     upgradesText.text = text;
 }
 
-   public void BackToLobby()
-{
-    Time.timeScale = 1f;
+    public void BackToLobby()
+    {
+        Time.timeScale = 1f;
 
-    // Vypočítej a ulož chemikálie
-    float survivalTime = GameManager.Instance != null ? GameManager.Instance.survivalTime : 0f;
-    int earnedChemicals = Mathf.FloorToInt(survivalTime / 5f);
-    int currentChemicals = PlayerPrefs.GetInt("Chemicals", 0);
-    PlayerPrefs.SetInt("Chemicals", currentChemicals + earnedChemicals);
-    PlayerPrefs.Save();
+        float survivalTime = GameManager.Instance != null ? GameManager.Instance.survivalTime : 0f;
+        int earnedChemicals = Mathf.FloorToInt(survivalTime / 5f);
+        int currentChemicals = PlayerPrefs.GetInt("Chemicals", 0);
+        PlayerPrefs.SetInt("Chemicals", currentChemicals + earnedChemicals);
+        PlayerPrefs.Save();
 
-    if (GameManager.Instance != null)
-        GameManager.Instance.ResetIngameUpgrades();
+        if (GameManager.Instance != null)
+            GameManager.Instance.ResetIngameUpgrades();
 
-    SceneManager.LoadScene("Lobby");
-}
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlayMusic(AudioManager.Instance.lobbyMusic);
+
+        SceneManager.LoadScene("Lobby");
+    }
 }

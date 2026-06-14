@@ -33,7 +33,7 @@ public class PlayerDash : MonoBehaviour
         else
         {
             if (dashCooldownText != null)
-                dashCooldownText.text = "DASH: Ready ✅";
+                dashCooldownText.text = "DASH: Ready";
         }
 
         if (Time.timeScale == 0f) return;
@@ -68,5 +68,8 @@ public class PlayerDash : MonoBehaviour
         health.isInvincible = false;
         rb.linearVelocity = Vector2.zero;
         movement.enabled = true;
+
+        if (AudioManager.Instance != null)
+        AudioManager.Instance.PlayDash();
     }
 }

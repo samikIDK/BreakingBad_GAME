@@ -29,6 +29,9 @@ public class XPSystem : MonoBehaviour
 
         Debug.Log("Level Up! Level: " + currentLevel);
         OnLevelUp?.Invoke(currentLevel);
+
+        if (AudioManager.Instance != null)
+        AudioManager.Instance.PlayLevelUp();
     }
 
     public float GetXPProgress()
